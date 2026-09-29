@@ -501,6 +501,11 @@ disabled; v1 has no per-asset overrides, so effective caps equal configured caps
 - Duplicate addresses within a list are rejected.
 - Self-address may not appear in `assets`/`protocols`.
 
+Each bullet above is pinned by a parametrized unit test in `src/lib.rs` (one case per rule,
+test name quoting the bullet, e.g. `rejects_window_cap_without_window_secs`). Invalid configs
+must return `InvalidConfig` with the stored policy unchanged; valid boundary configs must be
+accepted. Adding a new §8 rule without a corresponding test case fails CI (CONTRIBUTING rule 2).
+
 Invalid config → `InvalidConfig`, policy unchanged (fail-closed, never partially applied).
 
 ---
@@ -510,6 +515,7 @@ Invalid config → `InvalidConfig`, policy unchanged (fail-closed, never partial
 Events are the contract's audit trail and Phase-2 telemetry vocabulary. Topics chosen for cheap
 filtering by the SDK listener.
 
+<!-- §8 validation rules are enumerated exhaustively in the parametrized test matrix; see §8. -->
 | Event | Topics | Data | Emitted |
 |---|---|---|---|
 | `auth_checked` | `result: Symbol` (`allowed`/`blocked`), `reason: Symbol` | (none) | every `__check_auth` / `check` decision |
