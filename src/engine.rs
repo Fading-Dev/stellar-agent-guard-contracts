@@ -963,7 +963,9 @@ mod tests {
                 &mut l,
                 1000,
                 vec![&env, proto_ctx(&env, 3, "swap")]
-            ),
+            )
+            .first()
+            .unwrap(),
             Decision::Allowed
         ));
         assert!(matches!(
@@ -975,7 +977,9 @@ mod tests {
                 &mut l,
                 1000,
                 vec![&env, proto_ctx(&env, 3, "anything_else")]
-            ),
+            )
+            .first()
+            .unwrap(),
             Decision::Allowed
         ));
     }
@@ -1003,13 +1007,15 @@ mod tests {
                 &mut l,
                 1000,
                 vec![&env, proto_ctx(&env, 3, "swap")]
-            ),
+            )
+            .first()
+            .unwrap(),
             Decision::Allowed
         ));
     }
 
     #[test]
-    /// SPEC §6.3: unlisted fn on a listed contract → FunctionNotAllowed.
+    /// SPEC §6.3: unlisted fn on a listed contract → `FunctionNotAllowed`.
     fn protocol_unlisted_fn_denied() {
         let env = Env::default();
         let sa = self_addr(&env);
@@ -1031,13 +1037,15 @@ mod tests {
                 &mut l,
                 1000,
                 vec![&env, proto_ctx(&env, 3, "drain")]
-            ),
+            )
+            .first()
+            .unwrap(),
             Decision::Blocked(Error::FunctionNotAllowed)
         ));
     }
 
     #[test]
-    /// SPEC §6.3: contract not in protocols → UnknownContract.
+    /// SPEC §6.3: contract not in protocols → `UnknownContract`.
     fn protocol_unknown_contract_denied() {
         let env = Env::default();
         let sa = self_addr(&env);
@@ -1059,7 +1067,9 @@ mod tests {
                 &mut l,
                 1000,
                 vec![&env, proto_ctx(&env, 4, "swap")]
-            ),
+            )
+            .first()
+            .unwrap(),
             Decision::Blocked(Error::UnknownContract)
         ));
     }
@@ -1084,7 +1094,7 @@ mod tests {
         // Must be classified as Protocol (allowed), not AssetTransfer.
         let ctx = vec![&env, transfer_ctx(&env, 3, 2, 5)];
         let d = decide(&env, &sa, Some(&p), &alive(), &mut l, 1000, ctx.clone());
-        assert!(matches!(d, Decision::Allowed));
+        assert!(matches!(d.first().unwrap(), Decision::Allowed));
         assert_eq!(l.total, 0);
     }
 
