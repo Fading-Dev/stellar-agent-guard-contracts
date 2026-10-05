@@ -1,5 +1,4 @@
 #![cfg_attr(not(test), no_std)]
-#![no_std]
 
 //! stellar-agent-guard-contracts — a Soroban **custom account** that enforces
 //! agent spend policy inside `__check_auth`. See SPEC.md.
