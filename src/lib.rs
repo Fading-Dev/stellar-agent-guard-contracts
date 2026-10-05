@@ -1018,7 +1018,10 @@ mod policy_engine_type {
                 },
                 &mut ledger,
                 now,
-                vec![&env, call],
+                // Qualified path: under `test` builds the crate keeps the std
+                // prelude (`cfg_attr(not(test), no_std)`), which makes a bare
+                // `vec!` inside this `use super::*` module ambiguous.
+                soroban_sdk::vec![&env, call],
             );
             let Some(verdict) = verdicts.first() else {
                 panic_with_error!(&env, Error::DecisionInvariantViolation);

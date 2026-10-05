@@ -46,7 +46,6 @@ use soroban_sdk::xdr::{
 use soroban_sdk::{
     contract, contractimpl, vec, Address, BytesN, Env, FromVal, IntoVal, InvokeError, Symbol, Val,
 };
-use soroban_sdk::testutils::Address as _;
 use std::format;
 
 /// A `ScVal::Symbol` built from a plain string (event names / map keys).
@@ -3314,7 +3313,7 @@ fn policy_config_debug_snapshot() {
 // (revision + status snapshot). Each valid boundary case asserts acceptance.
 
 /// Snapshot of the observable policy state used to prove "policy unchanged".
-fn snapshot_policy(h: &Harness) -> (u32, bool, u64, u64) {
+fn snapshot_policy(h: &Harness) -> (u64, bool, u64, u64) {
     let st = h.status();
     (st.policy_revision, st.has_policy, st.now, st.last_heartbeat)
 }
