@@ -1,4 +1,4 @@
-#![cfg_attr(not(test), no_std)]
+#![no_std]
 #![deny(missing_docs)]
 
 //! stellar-agent-guard-contracts — a Soroban **custom account** that enforces
@@ -1018,10 +1018,7 @@ mod policy_engine_type {
                 },
                 &mut ledger,
                 now,
-                // Qualified path: under `test` builds the crate keeps the std
-                // prelude (`cfg_attr(not(test), no_std)`), which makes a bare
-                // `vec!` inside this `use super::*` module ambiguous.
-                soroban_sdk::vec![&env, call],
+                vec![&env, call],
             );
             let Some(verdict) = verdicts.first() else {
                 panic_with_error!(&env, Error::DecisionInvariantViolation);
